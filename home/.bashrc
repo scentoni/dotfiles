@@ -40,6 +40,7 @@ alias ..='cd ..'
 alias ll='ls -FlAv'
 pandoh(){ pandoc $1.md -o $1.html && open $1.html; }
 
+# From Andy Buckley http://pastebin.com/xS9sgQsX
 ## Path manipulation functions
 
 ## Reprint a colon-separated path with each element on a separate line
