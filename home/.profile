@@ -20,9 +20,20 @@ $HOME/go/bin:\
 /usr/local/go/bin:\
 $PATH
 
+export MANPATH="/usr/share/man:/mnt/users/scentoni/share/man:$MANPATH"
+
 export GOPATH=$HOME/go
 export PAGER="/usr/bin/less -ins"
-export TERM=xterm
+#export TERM=xterm
 export PERL_BADLANG=0
+export HISTCONTROL=ignoredups:ignorespace
+export VISUAL=vim
+export EDITOR=vim
+export GREP_OPTIONS='--color=auto'
+export LESS="-insMR"
+
+#export IPNUMBERS=`ifconfig -a|awk 'BEGIN{ORS="="} /inet/ && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
+#export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
+export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'`
 
 [ -f $HOME/.bashrc ] && . $HOME/.bashrc
