@@ -17,7 +17,8 @@ export PATH=/sbin:\
 /opt/csw/bin:\
 $HOME/bin:\
 $HOME/go/bin:\
-/usr/local/go/bin
+/usr/local/go/bin:\
+$PATH
 
 export GOPATH=$HOME/go
 export PAGER="/usr/bin/less -ins"
