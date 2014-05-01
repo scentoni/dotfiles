@@ -14,6 +14,32 @@ yellow="\[$(tput setaf 3)\]"
   
 export PS1="$yellow$bold\u@\h:\w \$$reset "
 
+function mkcd {
+  dir="$*";
+  mkdir -p "$dir" && cd "$dir";
+}
+
+vipath ()
+{
+    echo $PATH | tr ':' '\n' >$HOME/.vipath;
+    $EDITOR $HOME/.vipath;
+    export PATH=`<$HOME/.vipath tr '\n' ':' | sed -e 's/:*$//'`
+}
+
+ssh() {
+    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
+            tmux rename-window "$*"
+            command ssh "$@"
+            tmux set-window-option automatic-rename "on" 1>/dev/null
+    else
+            command ssh "$@"
+    fi
+}
+
+alias ..='cd ..'
+alias ll='ls -FlAv'
+pandoh(){ pandoc $1.md -o $1.html && open $1.html; }
+
 ## Path manipulation functions
 
 ## Reprint a colon-separated path with each element on a separate line
@@ -153,25 +179,3 @@ function pathto() {
         *) echo "Usage: pathto <relpath>"; return 1;;
     esac
 }
-
-
-vipath ()
-{
-    echo $PATH | tr ':' '\n' >$HOME/.vipath;
-    $EDITOR $HOME/.vipath;
-    export PATH=`<$HOME/.vipath tr '\n' ':' | sed -e 's/:*$//'`
-}
-
-ssh() {
-    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$*"
-            command ssh "$@"
-            tmux set-window-option automatic-rename "on" 1>/dev/null
-    else
-            command ssh "$@"
-    fi
-}
-
-alias ..='cd ..'
-alias ll='ls -FlAv'
-pandoh(){ pandoc $1.md -o $1.html && open $1.html; }
