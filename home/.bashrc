@@ -49,7 +49,7 @@ function pathsplit {
     # TODO: clean first? Configurable?
     case $# in
         0) read i && pathhead "$i";;
-        1) echo "$1" | sed 's/:/\n/g';;
+        1) echo "$1" | sed $'s/:/\\\n/g';;
         *) echo "Usage: pathsplit <path> or echo <path> | pathsplit"; return 1;;
     esac
 }
