@@ -24,7 +24,7 @@ export MANPATH="/usr/share/man:/opt/csw/share/man:$HOME/share/man:$MANPATH"
 
 export GOPATH=$HOME/go
 export PAGER="/usr/bin/less -ins"
-export TERM=xterm
+#export TERM=xterm
 export PERL_BADLANG=0
 export HISTCONTROL=ignoredups:ignorespace
 export VISUAL=vim
