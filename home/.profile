@@ -4,17 +4,18 @@
 # environment variable definitions.
 
 
-export PATH=/sbin:\
-/usr/sbin:\
-/bin:\
-/usr/bin:\
-/usr/ucb:\
+export PATH=\
+/opt/csw/bin:\
 /usr/local/sbin:\
 /usr/local/bin:\
 /usr/sfw/bin:\
 /usr/gnu/bin:\
 /usr/ccs/bin:\
-/opt/csw/bin:\
+/sbin:\
+/usr/sbin:\
+/bin:\
+/usr/bin:\
+/usr/ucb:\
 $HOME/bin:\
 $HOME/go/bin:\
 /usr/local/go/bin:\
