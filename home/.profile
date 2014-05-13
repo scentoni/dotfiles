@@ -11,6 +11,7 @@ export PATH=\
 /usr/sfw/bin:\
 /usr/gnu/bin:\
 /usr/ccs/bin:\
+/usr/xpg6/bin/
 /sbin:\
 /usr/sbin:\
 /bin:\
