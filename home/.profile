@@ -3,7 +3,6 @@
 # (but not graphical programs, they go into a different file), and
 # environment variable definitions.
 
-
 export PATH=\
 /opt/csw/bin:\
 /usr/local/sbin:\
@@ -11,7 +10,7 @@ export PATH=\
 /usr/sfw/bin:\
 /usr/gnu/bin:\
 /usr/ccs/bin:\
-/usr/xpg6/bin/
+/usr/xpg6/bin:\
 /sbin:\
 /usr/sbin:\
 /bin:\
