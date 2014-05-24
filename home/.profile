@@ -3,50 +3,39 @@
 # (but not graphical programs, they go into a different file), and
 # environment variable definitions.
 
-function mkcd {
-  dir="$*";
-  mkdir -p "$dir" && cd "$dir";
-}
+export PATH=\
+/opt/csw/bin:\
+/usr/local/sbin:\
+/usr/local/bin:\
+/usr/sfw/bin:\
+/usr/gnu/bin:\
+/usr/ccs/bin:\
+/usr/xpg6/bin:\
+/sbin:\
+/usr/sbin:\
+/bin:\
+/usr/bin:\
+/usr/ucb:\
+$HOME/bin:\
+$HOME/go/bin:\
+/usr/local/go/bin:\
+$PATH
 
-function appenv {
-  if [ -z "${!1}" ]; then
-      export "$1"="$2"
-  else
-      # if [ -d "$2" ] && [[ ! $1 =~ (^|:)$2(:|$) ]]; then
-      if [ -d "$2" ] && [[ ":$1:" != *":$2:"* ]]; then
-          export "$1"="${!1}:$2"
-      fi
-  fi
-}
-
-function prepenv {
-  if [ -z "${!1}" ]; then
-      export "$1"="$2"
-  else
-      if [ -d "$2" ] && [[ ":$1:" != *":$2:"* ]]; then
-          export "$1"="$2:${!1}"
-      fi
-  fi
-}
-
-export PATH
-appenv PATH /usr/bin
-appenv PATH /usr/sbin
-appenv PATH /sbin
-prepenv PATH /usr/gnu/bin
-prepenv PATH /usr/local/sbin
-prepenv PATH /usr/local/bin
-prepenv PATH /usr/sfw/bin
-prepenv PATH /usr/ccs/bin
-prepenv PATH /usr/ucb
-prepenv PATH /opt/csw/bin
-prepenv PATH $HOME/bin
+export MANPATH="/usr/share/man:/opt/csw/share/man:$HOME/share/man:$MANPATH"
 
 export GOPATH=$HOME/go
-appenv PATH $GOPATH/bin
-
 export PAGER="/usr/bin/less -ins"
-export TERM=xterm
+#export TERM=xterm
 export PERL_BADLANG=0
+export HISTCONTROL=ignoredups:ignorespace
+export VISUAL=vim
+export EDITOR=vim
+export GREP_OPTIONS='--color=auto'
+export LESS="-insMR"
+export TERMINFO=$HOME/.terminfo
+
+#export IPNUMBERS=`ifconfig -a|awk 'BEGIN{ORS="="} /inet/ && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
+#export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
+export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'`
 
 [ -f $HOME/.bashrc ] && . $HOME/.bashrc
