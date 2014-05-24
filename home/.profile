@@ -33,6 +33,7 @@ export EDITOR=vim
 export GREP_OPTIONS='--color=auto'
 export LESS="-insMR"
 export TERMINFO=$HOME/.terminfo
+unset SSH_ASKPASS
 
 #export IPNUMBERS=`ifconfig -a|awk 'BEGIN{ORS="="} /inet/ && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
 #export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
