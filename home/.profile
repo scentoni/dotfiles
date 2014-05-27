@@ -7,21 +7,29 @@ export PATH=\
 /opt/csw/bin:\
 /usr/local/sbin:\
 /usr/local/bin:\
-/usr/sfw/bin:\
-/usr/gnu/bin:\
-/usr/ccs/bin:\
-/usr/xpg6/bin:\
 /sbin:\
-/usr/sbin:\
 /bin:\
+/usr/sbin:\
 /usr/bin:\
+/usr/sfw/bin:\
+/usr/sfw/sbin:\
+/opt/sfw/bin:\
+/opt/sfw/sbin:\
+/opt/SUNWspro/bin:\
 /usr/ucb:\
+/usr/ccs/bin:\
+/usr/gnu/bin:\
+/usr/xpg6/bin:\
 $HOME/bin:\
 $HOME/go/bin:\
 /usr/local/go/bin:\
 $PATH
 
-export MANPATH="/usr/share/man:/opt/csw/share/man:$HOME/share/man:$MANPATH"
+export MANPATH=\
+/usr/share/man:\
+/opt/csw/share/man:\
+$HOME/share/man:\
+$MANPATH
 
 export GOPATH=$HOME/go
 export PAGER="/usr/bin/less -ins"
@@ -33,7 +41,6 @@ export EDITOR=vim
 export GREP_OPTIONS='--color=auto'
 export LESS="-insMR"
 export TERMINFO=$HOME/.terminfo
-unset SSH_ASKPASS
 
 #export IPNUMBERS=`ifconfig -a|awk 'BEGIN{ORS="="} /inet/ && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
 #export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
