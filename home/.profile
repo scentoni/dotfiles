@@ -4,6 +4,10 @@
 # environment variable definitions.
 
 export PATH=\
+$HOME/bin:\
+$HOME/go/bin:\
+/opt/csw/gnu:\
+/opt/csw/sbin:\
 /opt/csw/bin:\
 /usr/local/sbin:\
 /usr/local/bin:\
@@ -16,19 +20,22 @@ export PATH=\
 /opt/sfw/bin:\
 /opt/sfw/sbin:\
 /opt/SUNWspro/bin:\
+/opt/SUNWjet/bin:\
 /usr/ucb:\
 /usr/ccs/bin:\
 /usr/gnu/bin:\
 /usr/xpg6/bin:\
-$HOME/bin:\
-$HOME/go/bin:\
 /usr/local/go/bin:\
 $PATH
 
 export MANPATH=\
+$HOME/share/man:\
 /usr/share/man:\
 /opt/csw/share/man:\
-$HOME/share/man:\
+/opt/SUNWjet/man:\
+/usr/sfw/share/man:\
+/opt/SUNWexplo/man:\
+/opt/SUNWspro/man:\
 $MANPATH
 
 export GOPATH=$HOME/go
