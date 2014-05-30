@@ -16,23 +16,33 @@ yellow="\[$(tput setaf 3)\]"
 export PS1="$yellow$bold\u@$IPNUMBERS\h:\w \$$reset "
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
-  colorflag="--color"
+    colorflag="--color"
 elif ls -G > /dev/null 2>&1; then # OS X `ls`
-  colorflag="-G"
+    colorflag="-G"
 fi
 
 alias ..='cd ..'
 alias ls="ls ${colorflag}"
 alias ll='ls -FlA'
 
-function pandoh(){ pandoc $1.md -o $1.html && open $1.html; }
-
-function mkcd {
-  mkdir -p "$@" ; cd "$@";
+function cats {
+    for var in "$@"; do
+        echo
+        echo "${var}:"
+        echo "\`\`\`"
+        cat "${var}"
+        echo
+        echo "\`\`\`"
+    done
 }
 
-vipath ()
-{
+function revsed { sed '/\n/!G;s/\(.\)\(.*\n\)/&\2\1/;//D;s/.//'; }
+
+function pandoh { pandoc $1.md -o $1.html && open $1.html; }
+
+function md { mkdir -p "$@" ; cd "$@"; }
+
+function vipath () {
     echo $PATH | tr ':' '\n' >$HOME/.vipath;
     $EDITOR $HOME/.vipath;
     export PATH=`<$HOME/.vipath tr '\n' ':' | sed -e 's/:*$//'`
@@ -40,11 +50,11 @@ vipath ()
 
 ssh() {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$*"
-            command ssh "$@"
-            tmux set-window-option automatic-rename "on" 1>/dev/null
+        tmux rename-window "$*"
+        command ssh "$@"
+        tmux set-window-option automatic-rename "on" 1>/dev/null
     else
-            command ssh "$@"
+        command ssh "$@"
     fi
 }
 
