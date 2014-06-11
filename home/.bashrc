@@ -36,6 +36,8 @@ function cats {
     done
 }
 
+function chomp { sed 's/#.*//' | grep -v '^$'; }
+
 function revsed { sed '/\n/!G;s/\(.\)\(.*\n\)/&\2\1/;//D;s/.//'; }
 
 function pandoh { pandoc $1.md -o $1.html && open $1.html; }
