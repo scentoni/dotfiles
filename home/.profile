@@ -53,4 +53,6 @@ export TERMINFO=$HOME/.terminfo
 #export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'|sed -e 's/=*$//'`
 export IPNUMBERS=`ifconfig -a|sed -e 's/ addr:/ /'|awk 'BEGIN{ORS="="} /inet / && $2 !~ /127.0.0.1/ && $2 !~ /0.0.0.0/ {print $2}'`
 
+[ -n "$SSH_CONNECTION" ] && unset SSH_ASKPASS
+
 [ -f $HOME/.bashrc ] && . $HOME/.bashrc
