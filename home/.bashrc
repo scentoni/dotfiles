@@ -6,26 +6,38 @@
 # If not running interactively, don't do anything
 [[ $- == *i* ]] || return
 
+# Don't bother trying to do cmd completion for an empty line
 shopt -s no_empty_cmd_completion
 
-export TERM=xterm-256color
+# Disable core files
+ulimit -S -c 0 > /dev/null 2>&1
+
+# export TERM=xterm-256color
+export TERM=xterm
 reset="\[$(tput sgr0)\]"
 bold="\[$(tput bold)\]"
 yellow="\[$(tput setaf 3)\]"
-  
 export PS1="$yellow$bold\u@$IPNUMBERS\h:\w \$$reset "
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
     colorflag="--color"
 elif ls -G > /dev/null 2>&1; then # OS X `ls`
     colorflag="-G"
 fi
+alias ls="ls ${colorflag}"
 
 alias ..='cd ..'
-alias ls="ls ${colorflag}"
+alias ...='cd ...'
 alias ll='ls -FlA'
 
-function cats {
+# http://tldp.org/LDP/abs/html/process-sub.html
+# Process substitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
+#diff <(ls $first_directory) <(ls $second_directory)
+
+# print filename followed by contents of file
+# Usage: cats .*rc
+cats () {
     for var in "$@"; do
         echo
         echo "${var}:"
@@ -36,21 +48,48 @@ function cats {
     done
 }
 
-function chomp { sed 's/#.*//' | grep -v '^$'; }
-
-function revsed { sed '/\n/!G;s/\(.\)\(.*\n\)/&\2\1/;//D;s/.//'; }
-
-function pandoh { pandoc $1.md -o $1.html && open $1.html; }
-
-function md { mkdir -p "$@" ; cd "$@"; }
-
-function vipath () {
-    echo $PATH | tr ':' '\n' >$HOME/.vipath;
-    $EDITOR $HOME/.vipath;
-    export PATH=`<$HOME/.vipath tr '\n' ':' | sed -e 's/:*$//'`
+# strip comments and blank lines
+# Usage: chomp <~/.bashrc
+chomp () {
+    sed 's/#.*//' | grep -v '^$'
 }
 
-ssh() {
+# reverse the contents of each line
+revsed () {
+    sed '/\n/!G;s/\(.\)\(.*\n\)/&\2\1/;//D;s/.//'
+}
+
+# create directory if it doesn't exist then change to it
+# md ~/etc
+md () {
+    mkdir -p "$@"
+    cd "$@"
+}
+
+# remove non-consecutive duplicate lines (vs. uniq)
+# Usage: echo $PATH | tr : \\n | unic
+unic () {
+    awk '!a[$0]++' "$@"
+}
+
+# edit an environment variable, interpreting colons as newlines
+# Usage: edv MANPATH
+edv () {
+    tmpfile=$(mktemp -t edv.XXXXXX)
+    varname=$1
+    echo ${!varname} | tr ':' '\n' >$tmpfile
+    $EDITOR $tmpfile
+    export $varname=`<$tmpfile tr '\n' ':' | sed -e 's/:*$//'`
+}
+
+# show all instances of the program in the path
+# whichall cd ls
+whichall () {
+    type -a "$@"
+}
+
+# label tmux windows upon ssh
+ssh () {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
         tmux rename-window "$*"
         command ssh "$@"
@@ -64,7 +103,7 @@ ssh() {
 ## Path manipulation functions
 
 ## Reprint a colon-separated path with each element on a separate line
-function pathsplit {
+pathsplit () {
     # TODO: add customisation of split character
     # TODO: clean first? Configurable?
     case $# in
@@ -76,7 +115,7 @@ function pathsplit {
 
 
 ## Print the first element on a colon-separated path
-function pathhead {
+pathhead () {
     case $# in
         0) read i && pathhead "$i";;
         1) echo "$1" | sed -e 's/\([^:]\+\):\?\(.*\)/\1/g';;
@@ -86,7 +125,7 @@ function pathhead {
 
 
 ## Print the trailing elements (if any) on a colon-separated path
-function pathtail {
+pathtail () {
     case $# in
         0) read i && pathtail "$i";;
         1) echo "$1" | sed -e 's/\([^:]\+\):\?\(.*\)/\2/g';;
@@ -96,7 +135,7 @@ function pathtail {
 
 
 ## Remove accidental repeated and leading/trailing colon separators from a path
-function pathclean {
+pathclean () {
     case $# in
         0) read i && pathclean "$i";;
         1) echo "$1" | sed -e 's/:\+/:/g' -e 's/^://g' -e 's/:$//g';;
@@ -104,7 +143,7 @@ function pathclean {
     esac
 }
 ## Same function as pathclean, but applied in-place to a named path
-function pathcleani {
+pathcleani () {
     case $# in
         1) tmp=$(eval "pathclean \$$1"); eval "$1=$tmp"; unset tmp;;
         *) echo "Usage: pathcleani <varname>"; return 1;;
@@ -113,7 +152,7 @@ function pathcleani {
 
 
 ## Reduce a colon-separated path so that each entry appears at most once (at its earliest position)
-function pathuniq {
+pathuniq () {
     case $# in
         0) read i && pathclean "$i";;
         1) tmp=`pathclean $1`
@@ -132,7 +171,7 @@ function pathuniq {
     esac
 }
 ## Same function as pathuniq, but applied in-place to a named path
-function pathuniqi {
+pathuniqi () {
     case $# in
         1) tmp=$(eval "pathuniq \$$1"); eval "$1=$tmp"; unset tmp;;
         *) echo "Usage: pathuniqi <varname>"; return 1;;
@@ -141,7 +180,7 @@ function pathuniqi {
 
 
 ## Prepend a new path to an existing named path variable
-function pathprepend() {
+pathprepend () {
     # TODO: optionally do uniqueness as well as cleaning
     # TODO: make cleaning optional
     case $# in
@@ -150,7 +189,7 @@ function pathprepend() {
     esac
 }
 ## Same function as pathprepend, but applied in-place to the named path
-function pathprependi() {
+pathprependi () {
     case $# in
         2) tmp=`pathprepend $1 $2`; eval "$1=$tmp";;
         *) echo "Usage: pathprependi <varname> <path_to_add>"; return 1;;
@@ -159,7 +198,7 @@ function pathprependi() {
 
 
 ## Append a new path to an existing named path variable
-function pathappend() {
+pathappend () {
     # TODO: optionally do uniqueness as well as cleaning
     # TODO: make cleaning optional
     case $# in
@@ -168,7 +207,7 @@ function pathappend() {
     esac
  }
 ## Same function as pathprepend, but applied in-place to the named path
-function pathappendi() {
+pathappendi () {
     case $# in
         2) tmp=`pathappend $1 $2`; eval "$1=$tmp";;
         *) echo "Usage: pathappendi <varname> <path_to_add>"; return 1;;
@@ -177,14 +216,14 @@ function pathappendi() {
 
 
 ## Remove a path element from a colon-separated path
-function pathrm() {
+pathrm () {
     case $# in
         2) tmp=`echo ":$1:" | sed -e "s/:$2:/:/g"`; pathclean $tmp;;
         *) echo "Usage: pathrm <path> <path_to_rm>"; return 1;;
     esac
 }
 ## Same function as pathrm, but applied in-place to the named path
-function pathrmi() {
+pathrmi () {
     case $# in
         2) tmp=$(eval "pathrm \$$1 $2"); eval "$1=$tmp";;
         *) echo "Usage: pathrmi <varname> <path_to_rm>"; return 1;;
@@ -193,7 +232,7 @@ function pathrmi() {
 
 
 ## List the absolute path to a relatively-specified file/dir
-function pathto() {
+pathto () {
     case $# in
         0) pwd;;
         1) dir=$(cd `dirname $1` && pwd); pathclean "$dir/`basename $1`";;
