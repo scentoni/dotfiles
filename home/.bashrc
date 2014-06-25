@@ -48,6 +48,12 @@ cats () {
     done
 }
 
+# colorize unified diff output
+# Usage: svn diff | colorize
+colorize () {
+  sed 's/^-/\x1b[41m-/;s/^+/\x1b[42m+/;s/^@/\x1b[34m@/;s/$/\x1b[0m/'
+}
+
 # strip comments and blank lines
 # Usage: chomp <~/.bashrc
 chomp () {
