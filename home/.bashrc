@@ -48,10 +48,22 @@ cats () {
     done
 }
 
+# http://stackoverflow.com/questions/4210042/exclude-directory-from-find-command
+sloc () {
+    find "$@" -not \( -path */.svn -prune \) -not \( -path */.git -prune \) -type f |xargs wc -l
+}
+
 # colorize unified diff output
 # Usage: svn diff | colorize
 colorize () {
-  sed 's/^-/\x1b[41m-/;s/^+/\x1b[42m+/;s/^@/\x1b[34m@/;s/$/\x1b[0m/'
+    case $(uname -s) in
+        Darwin|FreeBSD)
+            sed "s/^-/`echo -e \"\x1b\"`[41m-/;s/^+/`echo -e \"\x1b\"`[42m+/;s/^@/`echo -e \"\x1b\"`[34m@/;s/$/`echo -e \"\x1b\"`[0m/"
+        ;;
+        Linux)
+            sed 's/^-/\x1b[41m-/;s/^+/\x1b[42m+/;s/^@/\x1b[34m@/;s/$/\x1b[0m/'
+        ;;
+    esac
 }
 
 # strip comments and blank lines
