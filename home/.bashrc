@@ -12,12 +12,47 @@ shopt -s no_empty_cmd_completion
 # Disable core files
 ulimit -S -c 0 > /dev/null 2>&1
 
+if hash vim 2>/dev/null; then
+  export EDITOR=vim
+else
+  export EDITOR=vi
+fi
+
 # export TERM=xterm-256color
 export TERM=xterm
 reset="\[$(tput sgr0)\]"
 bold="\[$(tput bold)\]"
 yellow="\[$(tput setaf 3)\]"
 export PS1="$yellow$bold\u@$IPNUMBERS\h:\w \$$reset "
+
+function timer_start {
+  #echo -ne "\e[0m"
+  timer=${timer:-$SECONDS}
+}
+
+function timer_stop {
+  timer_show=$(($SECONDS - $timer))
+  unset timer
+}
+
+trap 'timer_start' DEBUG
+PROMPT_COMMAND=timer_stop
+
+case "$OSTYPE" in
+  solaris*) oschar="S" ;;
+  darwin*)  oschar="M" ;; 
+  linux*)   oschar="L" ;;
+  bsd*)     oschar="B" ;;
+  *)        oschar="?" ;;
+esac
+
+#PS1='[last: ${timer_show}s][\w]\$ '
+#PS1='\[\e[34m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")[\h:\w]\$ \[\e[46m\]\[\e[30m\]'
+#PS1='\[\e[34m\]\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$ \[\e[43m\]\[\e[30m\]'
+#PS1='\[\e[34m\]\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]▶\[\e[0m\]'
+#PS1='$oschar\[\e[34m\]\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]▶\[\e[0m\]'
+#PS1='\[\e[34m\]$oschar\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]>\[\e[0m\]'
+PS1='\[\e[34m\e[43m\]$(es=$?; [ $es -ne 0 ] && echo -e "\[\a\][exit code $es]\[\n\]")$([ $timer_show -gt 9 ] && echo -e "\[\a\][${timer_show}s]\[\n\]")\h:\w\$\[\e[40m\e[33m\e[0m\]$oschar>'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -29,11 +64,24 @@ alias ls="ls ${colorflag}"
 
 alias ..='cd ..'
 alias ...='cd ...'
+alias ....='cd ....'
 alias ll='ls -FlA'
+alias h='history'
+alias j='jobs -l'
+alias ports='netstat -tulanp'
+alias tre="find . -print | sed -e 's:[^/]*/:|____:g;s:____|: |:g'"
 
 # http://tldp.org/LDP/abs/html/process-sub.html
 # Process substitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
 #diff <(ls $first_directory) <(ls $second_directory)
+
+# remove desktop dregs files
+cleanse () {
+  find /share -type f -name 'Thumbs.db' -exec rm {} \;
+  find /share -type f -name '*.DS_Store' -exec rm {} \;
+  find /share -type f -name '.fuse*' -exec rm {} \;
+  find /share -type f -name '.nfs*' -exec rm {} \;
+}
 
 # print filename followed by contents of file
 # Usage: cats .*rc
@@ -54,22 +102,28 @@ sloc () {
 }
 
 # colorize unified diff output
+# Usage: diff -u a b | colorize
 # Usage: svn diff | colorize
 colorize () {
     case $(uname -s) in
         Darwin|FreeBSD)
             sed "s/^-/`echo -e \"\x1b\"`[41m-/;s/^+/`echo -e \"\x1b\"`[42m+/;s/^@/`echo -e \"\x1b\"`[34m@/;s/$/`echo -e \"\x1b\"`[0m/"
         ;;
-        Linux)
+        Linux|SunOS)
             sed 's/^-/\x1b[41m-/;s/^+/\x1b[42m+/;s/^@/\x1b[34m@/;s/$/\x1b[0m/'
         ;;
     esac
 }
 
 # strip comments and blank lines
-# Usage: chomp <~/.bashrc
-chomp () {
-    sed 's/#.*//' | grep -v '^$'
+# Usage: nocomment <~/.bashrc
+nocomment () {
+    sed -e's/#.*//;/^\s*$/d'
+}
+
+# Usage: psgrep cron
+psgrep() {
+    ps -ef | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto
 }
 
 # reverse the contents of each line
@@ -103,11 +157,22 @@ edv () {
 # show all instances of the program in the path
 # whichall cd ls
 whichall () {
-    type -a "$@"
+    type -a "$@" |cut -d' ' -f3|xargs ls -l
+}
+
+# renumber tmux windows
+tmuxrenumber () {
+    $i = $(tmux show-options -g|grep base|cut -d' ' -f2)
+    tmux list-windows | cut -d: -f1 | while read winindex; do 
+      if (( winindex != i )); then
+        tmux move-window -d -s $winindex -t $i
+      fi
+      (( i++ ))
+    done
 }
 
 # label tmux windows upon ssh
-ssh () {
+tsh () {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
         tmux rename-window "$*"
         command ssh "$@"
