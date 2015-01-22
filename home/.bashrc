@@ -78,7 +78,7 @@ alias tre="find . -print | sed -e 's:[^/]*/:|____:g;s:____|: |:g'"
 # use Pandoc to convert Markdown to HTML
 p2h () {
   for f in "$@"; do
-    pandoc --self-contained -c $HOME/.pandoc/pandoc.css $f -o ${f%.md}.html)
+    pandoc --self-contained -c $HOME/.pandoc/pandoc.css $f -o ${f%.md}.html
   done
 }
 
