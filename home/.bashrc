@@ -75,6 +75,13 @@ alias tre="find . -print | sed -e 's:[^/]*/:|____:g;s:____|: |:g'"
 # Process substitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
 #diff <(ls $first_directory) <(ls $second_directory)
 
+# use Pandoc to convert Markdown to HTML
+p2h () {
+  for f in "$@"; do
+    pandoc --self-contained -c $HOME/.pandoc/pandoc.css $f -o ${f%.md}.html)
+  done
+}
+
 # remove desktop dregs files
 cleanse () {
   find /share -type f -name 'Thumbs.db' -exec rm {} \;
