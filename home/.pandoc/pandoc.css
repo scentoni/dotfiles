@@ -2,7 +2,7 @@ html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-
 
 body{
   color:#444;
-  font-family:Palatino, 'Palatino Linotype', Garamond, Georgia, Times, 'Times New Roman',
+  font-family: Garamond, Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman',
               "Hiragino Sans GB", "STXihei", "微软雅黑", serif;
   font-size:12px;
   line-height:1.5em;
@@ -94,6 +94,10 @@ img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
 
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
+
+table, th, td {
+     border: 1px solid #ccc;
+   }
 
 @media only screen and (min-width: 480px) {
 body{font-size:14px;}

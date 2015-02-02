@@ -6,9 +6,11 @@
 export PATH=\
 $HOME/bin:\
 $HOME/go/bin:\
+$HOME/Library/Haskell/bin:\
 /opt/csw/gnu:\
 /opt/csw/sbin:\
 /opt/csw/bin:\
+/opt/freeware/bin:\
 /usr/local/sbin:\
 /usr/local/bin:\
 /sbin:\
