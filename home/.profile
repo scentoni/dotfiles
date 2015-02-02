@@ -33,6 +33,7 @@ $PATH
 export MANPATH=\
 $HOME/share/man:\
 /usr/share/man:\
+/opt/freeware/man:\
 /opt/csw/share/man:\
 /opt/SUNWjet/man:\
 /usr/sfw/share/man:\
