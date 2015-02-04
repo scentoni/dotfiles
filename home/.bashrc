@@ -329,3 +329,6 @@ pathto () {
         *) echo "Usage: pathto <relpath>"; return 1;;
     esac
 }
+
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+
