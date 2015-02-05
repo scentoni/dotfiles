@@ -42,7 +42,9 @@ case "$OSTYPE" in
   solaris*) oschar="S" ;;
   darwin*)  oschar="M" ;; 
   linux*)   oschar="L" ;;
-  bsd*)     oschar="B" ;;
+  hpux*)    oschar="H" ;;
+  aix*)     oschar="I" ;;
+  *bsd*)    oschar="B" ;;
   *)        oschar="?" ;;
 esac
 
