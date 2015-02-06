@@ -42,7 +42,9 @@ case "$OSTYPE" in
   solaris*) oschar="S" ;;
   darwin*)  oschar="M" ;; 
   linux*)   oschar="L" ;;
-  bsd*)     oschar="B" ;;
+  hpux*)    oschar="H" ;;
+  aix*)     oschar="I" ;;
+  *bsd*)    oschar="B" ;;
   *)        oschar="?" ;;
 esac
 
@@ -329,3 +331,6 @@ pathto () {
         *) echo "Usage: pathto <relpath>"; return 1;;
     esac
 }
+
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+
