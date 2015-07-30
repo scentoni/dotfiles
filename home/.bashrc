@@ -111,9 +111,9 @@ sloc () {
 }
 
 # colorize unified diff output
-# Usage: diff -u a b | colorize
-# Usage: svn diff | colorize
-colorize () {
+# Usage: diff -u a b | colorizediff
+# Usage: svn diff | colorizediff
+colorizediff () {
     case $(uname -s) in
         Darwin|FreeBSD)
             sed "s/^-/`echo -e \"\x1b\"`[41m-/;s/^+/`echo -e \"\x1b\"`[42m+/;s/^@/`echo -e \"\x1b\"`[34m@/;s/$/`echo -e \"\x1b\"`[0m/"
@@ -122,6 +122,23 @@ colorize () {
             sed 's/^-/\x1b[41m-/;s/^+/\x1b[42m+/;s/^@/\x1b[34m@/;s/$/\x1b[0m/'
         ;;
     esac
+}
+
+# inspired by http://stackoverflow.com/questions/981601/colorized-grep-viewing-the-entire-file-with-highlighted-matches
+# cat ~/.bashrc |highlight red path |highlight 36m case
+function highlight() {
+    CSI=$(echo -e '\033[')
+    case $1 in
+        black)   seq="30m";;
+        red)     seq="31m";;
+        green)   seq="32m";;
+        yellow)  seq="33m";;
+        blue)    seq="34m";;
+        magenta) seq="35m";;
+        cyan)    seq="36m";;
+        *)       seq="$1";;
+    esac
+    sed "s/$2/${CSI}${seq}&${CSI}0m/g"
 }
 
 # strip comments and blank lines
