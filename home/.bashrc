@@ -144,7 +144,7 @@ function highlight() {
 # strip comments and blank lines
 # Usage: nocomment <~/.bashrc
 nocomment () {
-    sed -e's/#.*//;/^\s*$/d'
+    sed -e's/#.*//;/^[[:space:]]*$/d'
 }
 
 # Usage: psgrep cron
