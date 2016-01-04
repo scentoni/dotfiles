@@ -170,6 +170,15 @@ unic () {
     awk '!a[$0]++' "$@"
 }
 
+# get version for every executable in $PATH
+# Usage: versionall python
+versionall () {
+  for p in $(type -ap "$@" |unic); do
+    echo -n "$p: "
+    $p --version
+  done
+}
+
 # edit an environment variable, interpreting colons as newlines
 # Usage: edv MANPATH
 edv () {
