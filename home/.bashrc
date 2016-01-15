@@ -77,6 +77,27 @@ alias tre="find . -print | sed -e 's:[^/]*/:|____:g;s:____|: |:g'"
 # Process substitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
 #diff <(ls $first_directory) <(ls $second_directory)
 
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+treee () {
+  tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
+}
+
+# Get colors in manual pages
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
 # use Pandoc to convert Markdown to HTML
 p2h () {
   for f in "$@"; do
