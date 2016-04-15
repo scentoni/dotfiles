@@ -98,6 +98,8 @@ man() {
     man "$@"
 }
 
+# use p4merge to open files
+
 # use Pandoc to convert Markdown to HTML
 p2h () {
   for f in "$@"; do

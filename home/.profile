@@ -27,6 +27,7 @@ $HOME/Library/Haskell/bin:\
 /usr/ccs/bin:\
 /usr/gnu/bin:\
 /usr/xpg6/bin:\
+/usr/xpg4/bin:\
 /usr/local/go/bin:\
 $PATH
 
