@@ -99,6 +99,9 @@ man() {
 }
 
 # use p4merge to open files
+# http://answers.perforce.com/articles/KB/2848
+alias p4merge='/Applications/p4merge.app/Contents/MacOS/p4merge'
+
 
 # use Pandoc to convert Markdown to HTML
 p2h () {
