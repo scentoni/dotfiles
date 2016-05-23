@@ -77,7 +77,7 @@ alias tre="find . -print | sed -e 's:[^/]*/:|____:g;s:____|: |:g'"
 # Process substitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
 #diff <(ls $first_directory) <(ls $second_directory)
 
-# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# `treee` is a shorthand for `tree` with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
@@ -218,7 +218,7 @@ edv () {
 # show all instances of the program in the path
 # whichall cd ls
 whichall () {
-    type -a "$@" |cut -d' ' -f3|xargs ls -l
+    type -ap "$@" |xargs ls -l
 }
 
 # renumber tmux windows
