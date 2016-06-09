@@ -102,6 +102,9 @@ man() {
 # http://answers.perforce.com/articles/KB/2848
 alias p4merge='/Applications/p4merge.app/Contents/MacOS/p4merge'
 
+# http://unix.stackexchange.com/questions/366/convince-grep-to-output-all-lines-not-just-those-with-matches
+# Usage: head -999 * |highlight ==
+highlight() { grep --color -E -- "$1|\$" "${@:2}"; }
 
 # use Pandoc to convert Markdown to HTML
 p2h () {
