@@ -3,6 +3,10 @@
 # (but not graphical programs, they go into a different file), and
 # environment variable definitions.
 
+# http://apple.stackexchange.com/questions/3253/ctrl-o-behavior-in-terminal-app
+# enable C-o in Terminal.app and iTerm
+stty discard undef
+
 export PATH=\
 $HOME/bin:\
 $HOME/go/bin:\
