@@ -9,6 +9,7 @@ stty discard undef
 
 export PATH=\
 $HOME/bin:\
+$HOME/local/bin:\
 $HOME/go/bin:\
 $HOME/Library/Haskell/bin:\
 /opt/csw/gnu:\
