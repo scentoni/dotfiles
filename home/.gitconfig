@@ -13,6 +13,6 @@
 	dump = cat-file -p
 
 [push]
-	default = matching
+	default = simple
 [color]
 	ui = auto
