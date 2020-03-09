@@ -11,8 +11,24 @@
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	type = cat-file -t
 	dump = cat-file -p
+	bb = !/Applications/BottomlessBlame.app/Contents/MacOS/BottomlessBlame
+	vimdiff = difftool -y -t vimdiff
+	# Get the current branch name (not so useful in itself, but used in
+	# other aliases)
+	branch-name = "!git rev-parse --abbrev-ref HEAD"
+	# Push the current branch to the remote "origin", and set it to track
+	# the upstream branch
+	publish = "!f() { git push -u origin ${1-$(git branch-name)}; }; f"
+	# Delete the remote version of the current branch
+	unpublish = "!f() { git push origin --delete ${1-$(git branch-name)}; }; f"
+	find-file = "!for branch in $(git for-each-ref --format=\"%(refname)\" refs/heads); do if git ls-tree -r --name-only $branch | grep \"$1\" > /dev/null; then  echo \"${branch}:\"; git ls-tree -r --name-only $branch | nl -bn -w3 | grep \"$1\"; fi; done; :"
+	find-file-remote = "!for branch in $(git for-each-ref --format=\"%(refname)\" refs/remotes); do if git ls-tree -r --name-only $branch | grep \"$1\" > /dev/null; then  echo \"${branch}:\"; git ls-tree -r --name-only $branch | nl -bn -w3 | grep \"$1\"; fi; done; :"
 
 [push]
 	default = simple
 [color]
 	ui = auto
+[diff]
+	tool = vimdiff
+[merge]
+	conflictstyle = diff3

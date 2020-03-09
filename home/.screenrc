@@ -3,9 +3,9 @@ startup_message off
 # Define a sane GNU screen command entry character
 # first letter defines the screen command key.
 # second letter defines the literal insert key.
-#escape "^T^T" # control t
+escape "^T^T" # control t
 #escape ^^^^ # control 6
-escape ^_^/ # control /
+e#scape ^_^/ # control /
 
 hardstatus alwayslastline "%{.kG}%-Lw%{.KW}%n%f %t%{-}%+Lw %=%{..G} %h %{..W} %Y-%m-%d %c"
 #hardstatus alwayslastline '%{= G}[ %{G}%H %{g}][%= %{= w}%?%-Lw%?%{= R}%n*%f %t%?%{= R}(%u)%?%{= w}%+Lw%?%= %{= g}][ %{y}Load: %l %{g}][%{B}%Y-%m-%d %{W}%c:%s %{g}]'

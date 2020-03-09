@@ -54,7 +54,7 @@ esac
 #PS1='\[\e[34m\]\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]▶\[\e[0m\]'
 #PS1='$oschar\[\e[34m\]\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]▶\[\e[0m\]'
 #PS1='\[\e[34m\]$oschar\[\e[43m\]$([ $timer_show -gt 10 ] && echo -e "\a[${timer_show}s]")\h:\w\$\[\e[40m\]\[\e[33m\]>\[\e[0m\]'
-PS1='\[\e[34m\e[43m\]$(es=$?; [ $es -ne 0 ] && echo -e "\[\a\][exit code $es]\[\n\]")$([ $timer_show -gt 9 ] && echo -e "\[\a\][${timer_show}s]\[\n\]")\h:\w\$\[\e[40m\e[33m\e[0m\]$oschar>'
+PS1='\[\e[34m\e[43m\]$(es=$?; [ $es -ne 0 ] && echo -e "\[\a\][exit code $es]\[\n\]")$([ ${timer_show:-0} -gt 9 ] && echo -e "\[\a\][${timer_show}s]\[\n\]")\h:\w\$\[\e[40m\e[33m\e[0m\]$oschar>'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
